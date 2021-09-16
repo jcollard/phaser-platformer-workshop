@@ -284,6 +284,7 @@ platforms.
 
 Add this line then Test your game again.
 
+<details>
 <summary>Click for Solution</summary>
 <pre>
 function create ()
