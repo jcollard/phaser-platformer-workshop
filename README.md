@@ -1,5 +1,31 @@
 # Platformer with Phaser 3!
 
+## Table of Contents
+
+- [Platformer with Phaser 3!](#platformer-with-phaser-3)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Part 1 - Setup](#part-1---setup)
+  - [Part 2 - Adding the Player](#part-2---adding-the-player)
+    - [The Player variable](#the-player-variable)
+    - [Loading player.png](#loading-playerpng)
+    - [Adding a Sprite](#adding-a-sprite)
+  - [Part 3 - Player Movement](#part-3---player-movement)
+    - [The Update Function](#the-update-function)
+    - [First Challenge](#first-challenge)
+  - [Part 4 - Adding Platforms](#part-4---adding-platforms)
+    - [Second Challenge](#second-challenge)
+  - [Part 5 - Making the Player Jump](#part-5---making-the-player-jump)
+    - [Third Challenge](#third-challenge)
+  - [Part 6 - Animating the Player](#part-6---animating-the-player)
+    - [Fourth Challenge](#fourth-challenge)
+    - [Facing Forward](#facing-forward)
+    - [Fifth Challenge](#fifth-challenge)
+    - [Sixth Challenge](#sixth-challenge)
+  - [Part 7 - Adding Stars](#part-7---adding-stars)
+    - [Seventh Challenge](#seventh-challenge)
+  - [Part 8 - Collecting Stars](#part-8---collecting-stars)
+
 ## Overview
 
 You will build a game in which the player jumps on platforms to collect stars.
@@ -640,3 +666,103 @@ function update ()
 }
 </pre>
 </details>
+
+## Part 7 - Adding Stars
+
+Now that our player can move around the play area, we will add stars for them to
+collect.
+
+First, add a new variable at the top of your `game.js` file called `stars`.
+
+```
+var stars;
+```
+
+Next, load the star image in the `preload` function.
+
+```javascript
+function preload ()
+{
+    this.load.image('sky', 'assets/sky.png');
+    
+    this.load.spritesheet('player', 'assets/player.png', { frameWidth: 32, frameHeight: 32 });
+
+    this.load.image('ground_tiny', 'assets/platform_tiny.png');
+    this.load.image('ground_small', 'assets/platform_small.png');
+    this.load.image('ground', 'assets/platform.png');
+    this.load.image('ground_large', 'assets/platform_large.png');
+
+    this.load.image('star', 'assets/star.png');
+}
+```
+
+In the `create` function, we will create a new group to store our stars:
+
+```javascript
+stars = this.physics.add.group();
+```
+
+Finally, we can place stars in our scene by using the following code:
+
+```javascript
+stars.add(this.physics.add.sprite(100, 200, 'star'));
+```
+
+Be sure to replace `100` with the x position you want and `200` with the y
+position that you want.
+
+After you've added a few stars, you can test your scene by clicking the
+`Preview` button. When you're done, press it again.
+
+### Seventh Challenge
+
+Notice, your stars will fall through your platforms! To fix this, we will need
+to add a collider between our stars and platforms. Can you write this code and
+add it to your `create` function.
+
+<details>
+<summary>Click for hint</summary>
+The following code adds a collider between the player and platforms. Can you modify it to add a collider between your stars and platforms?
+<pre>
+this.physics.add.collider(player, platforms);
+</pre>
+</details>  
+
+<details>
+<summary>Click for Solution</summary>
+<pre>
+this.physics.add.collider(stars, platforms);
+</pre>
+</details>
+
+## Part 8 - Collecting Stars
+
+When the player touches a star, we want them to collect it and remove it from
+the scene.
+
+To do this, we will define our own function `collectStar`. At the bottom of the
+`game.js` file add the following code:
+
+```javascript
+function collectStar (player, star)
+{
+    star.disableBody(true, true);
+}
+```
+
+Make sure this code is not part of your `update` function. 
+
+This function will make a star that the player touches disappear. To make this
+work, we must specify in our `create` function that w should use it when the
+`player` overlaps with a star.
+
+Add the following code to the end of your `create` function:
+
+```javascript
+this.physics.add.overlap(player, stars, collectStar, null, this);
+```
+
+You can now play your game by pressing the `Preview` button. 
+
+
+Congratulations! You've made your very own platformer!
