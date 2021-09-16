@@ -25,6 +25,7 @@
   - [Part 7 - Adding Stars](#part-7---adding-stars)
     - [Seventh Challenge](#seventh-challenge)
   - [Part 8 - Collecting Stars](#part-8---collecting-stars)
+  - [Finished Code](#finished-code)
 
 ## Overview
 
@@ -766,3 +767,106 @@ You can now play your game by pressing the `Preview` button.
 
 
 Congratulations! You've made your very own platformer!
+
+## Finished Code
+
+Your final code will look similar to this:
+
+```javascript
+// Define your variables here
+var player;
+var keys;
+var stars;
+
+// Load your images here
+function preload ()
+{
+    this.load.image('sky', 'assets/sky.png');
+    
+    this.load.spritesheet('player', 'assets/player.png', { frameWidth: 32, frameHeight: 32 });
+
+    this.load.image('ground_tiny', 'assets/platform_tiny.png');
+    this.load.image('ground_small', 'assets/platform_small.png');
+    this.load.image('ground', 'assets/platform.png');
+    this.load.image('ground_large', 'assets/platform_large.png');
+
+    this.load.image('star', 'assets/star.png');
+}
+
+// This runs at startup to initialize the scene
+function create ()
+{
+    this.add.image(400, 300, 'sky');
+    player = this.physics.add.sprite(50, 50, 'player');
+    player.setCollideWorldBounds(true);
+
+    keys = this.input.keyboard.createCursorKeys();
+
+    platforms = this.physics.add.staticGroup();
+
+    platforms.create(50, 100, 'ground_tiny');
+    platforms.create(80, 200, 'ground_small');
+    platforms.create(180, 300, 'ground');
+    platforms.create(50, 400, 'ground_large');
+
+    this.physics.add.collider(player, platforms);
+
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('player', { start: 24, end: 26 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'forward',
+        frames: [ { key: 'player', frame: 1 } ],
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('player', { start: 12, end: 14 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    stars = this.physics.add.group();
+    stars.add(this.physics.add.sprite(100, 200, 'star'));
+    this.physics.add.collider(stars, platforms);
+    this.physics.add.overlap(player, stars, collectStar, null, this);
+}
+
+// This function is run every frame
+// Put your player controls here
+function update ()
+{
+    if (keys.right.isDown)
+    {
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+    } 
+    else if (keys.left.isDown)
+    {
+        //TODO: Set player Y velocity to a negative value
+        player.setVelocityX(-160);
+        player.anims.play('left', true);
+    }
+    else
+    {
+        //TODO: Set player X velocity to 0
+        player.setVelocityX(0);
+        player.anims.play('forward', true);
+    }
+
+    if (keys.up.isDown && player.body.touching.down)
+    {
+        player.setVelocityY(-330);
+    }
+}
+
+function collectStar (player, star)
+{
+    star.disableBody(true, true);
+}
+```
