@@ -1,5 +1,7 @@
 # Platformer with Phaser 3!
 
+My email: jcollard@chadwickschool.org
+
 ## Table of Contents
 
 - [Platformer with Phaser 3!](#platformer-with-phaser-3)
