@@ -1,5 +1,6 @@
 # Platformer with Phaser 3!
 
+My name: Joseph Collard
 My email: jcollard@chadwickschool.org
 
 ## Table of Contents
